@@ -233,11 +233,17 @@ export const Views = {
     </section>`;
   },
 
-  /* ─── TESTIMONIALS ─── */
+  /* ─── ASEGURADORAS ─── */
   renderAseguradoras() {
-    /* 22 logos placeholder — reemplazar src por logos reales cuando estén disponibles */
-    const logos = Array.from({ length: 22 }, (_, i) => ({
-      src: `assets/aseguradoras/aseg_${String(i + 1).padStart(2, "0")}.svg`,
+    /* Logos reales de aseguradoras aliadas */
+    const logos = [
+      "ASG-4.jpg","ASG-5.jpg","ASG-6.jpg","ASG-7.jpg","ASG-8.jpg","ASG-9.jpg",
+      "ASG-10.jpg","ASG-11.jpg","ASG-12.jpg","ASG-13.jpg","ASG-14.jpg","ASG-15.jpg",
+      "ASG-16.jpg","ASG-17.jpg","ASG-18.jpg","ASG-19.jpg","ASG-20.jpg","ASG-21.jpg",
+      "ASG-22.jpg","ASG-23.jpg","ASG-24.jpg","ASG-25.jpg","ASG-26.jpg","ASG-27.jpg",
+      "ASG-28.jpg","ASG-29.jpg",
+    ].map((file, i) => ({
+      src: `assets/aseguradoras/${file}`,
       alt: `Aseguradora aliada ${i + 1}`,
     }));
 
@@ -258,7 +264,7 @@ export const Views = {
       <div class="aseg-marquee" aria-label="Carrusel de aseguradoras aliadas" role="region">
         <div class="aseg-track" id="asegTrack">
           ${allLogos.map((logo, i) => `
-            <div class="aseg-item" aria-hidden="${i >= 22}">
+            <div class="aseg-item" aria-hidden="${i >= 26}">
               <img src="${logo.src}" alt="${logo.alt}" loading="lazy" width="120" height="72" />
             </div>
           `).join("")}
