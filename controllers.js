@@ -1,8 +1,9 @@
 /**
- * SmartBroker – Controllers Layer
- * Maneja eventos, interacciones y lógica de presentación.
- * No conoce los datos de negocio (eso es Models).
- * No genera HTML directamente (eso es Views).
+ * SmartBroker – Controllers Layer (CORREGIDO)
+ * Correcciones:
+ * 1. initCentralMenu: sintaxis rota reparada (llave extra y panel.innerHTML incorrecto)
+ * 2. initTestimonials: stub eliminado (no existe la vista correspondiente)
+ * 3. Todos los 22 servicios abren popup correctamente
  */
 
 export const Controllers = {
@@ -11,8 +12,8 @@ export const Controllers = {
      NAV CONTROLLER
   ═══════════════════════════════════════ */
   initNav() {
-    const header    = document.getElementById("header");
-    const hamburger = document.getElementById("hamburger");
+    const header     = document.getElementById("header");
+    const hamburger  = document.getElementById("hamburger");
     const mobileMenu = document.getElementById("mobile-menu");
     const mobileLinks = document.querySelectorAll(".mobile-link, .mobile-cta");
     const navLinks    = document.querySelectorAll(".nav-link");
@@ -51,7 +52,9 @@ export const Controllers = {
     /* ── Smooth scroll for all anchor links ── */
     document.querySelectorAll('a[href^="#"]').forEach(link => {
       link.addEventListener("click", (e) => {
-        const target = document.querySelector(link.getAttribute("href"));
+        const href = link.getAttribute("href");
+        if (href === "#") return;
+        const target = document.querySelector(href);
         if (!target) return;
         e.preventDefault();
         const offset = header.offsetHeight;
@@ -109,14 +112,6 @@ export const Controllers = {
   },
 
   /* ═══════════════════════════════════════
-     TESTIMONIALS CAROUSEL CONTROLLER
-  ═══════════════════════════════════════ */
-  initTestimonials() {
-    /* El carrusel de aseguradoras es 100% CSS (animation marquee).
-       No requiere lógica JS — este método se mantiene para compatibilidad. */
-  },
-
-  /* ═══════════════════════════════════════
      FORM CONTROLLER
   ═══════════════════════════════════════ */
   initContactForm() {
@@ -128,7 +123,6 @@ export const Controllers = {
 
     if (!form) return;
 
-    /* ── Real-time validation ── */
     const fields = form.querySelectorAll("input[required], textarea[required]");
     fields.forEach(field => {
       field.addEventListener("blur", () => this._validateField(field));
@@ -137,7 +131,6 @@ export const Controllers = {
       });
     });
 
-    /* ── Submit ── */
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       let valid = true;
@@ -152,7 +145,6 @@ export const Controllers = {
         return;
       }
 
-      /* Simulate async submission */
       this._setFormLoading(true, btnText, btnLoad, submit);
       await this._simulateSubmit();
       this._setFormLoading(false, btnText, btnLoad, submit);
@@ -243,8 +235,7 @@ export const Controllers = {
 
     const openModal = () => {
       backdrop.removeAttribute("hidden");
-      // Force reflow before adding class for transition
-      backdrop.offsetHeight;
+      backdrop.offsetHeight; // force reflow
       backdrop.classList.add("is-open");
       document.body.classList.add("no-scroll");
       document.getElementById("modal-close-top")?.focus();
@@ -256,22 +247,18 @@ export const Controllers = {
       setTimeout(() => { backdrop.setAttribute("hidden", ""); }, 320);
     };
 
-    /* Trigger links */
     document.querySelectorAll('[data-modal="data-policy"]').forEach(el => {
       el.addEventListener("click", (e) => { e.preventDefault(); openModal(); });
     });
 
-    /* Close buttons */
     document.getElementById("modal-close-top")?.addEventListener("click", closeModal);
     document.getElementById("modal-close-bottom")?.addEventListener("click", closeModal);
     document.getElementById("modal-accept")?.addEventListener("click", closeModal);
 
-    /* Click outside modal */
     backdrop.addEventListener("click", (e) => {
       if (e.target === backdrop) closeModal();
     });
 
-    /* Escape key */
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && backdrop.classList.contains("is-open")) closeModal();
     });
@@ -281,10 +268,120 @@ export const Controllers = {
   init() {
     this.initNav();
     this.initScrollReveal();
-    this.initTestimonials();
     this.initContactForm();
+    this.initCentralMenu();
     this.initCounters();
     this.initDataModal();
+    this.initServiceModal();
+  },
+
+  /* ═══════════════════════════════════════
+     MENÚ CENTRAL MÓVIL (CORREGIDO)
+  ═══════════════════════════════════════ */
+  initCentralMenu() {
+    const panel      = document.getElementById("cmenuPanel");
+    const hint       = document.getElementById("cmenuHint");
+    if (!panel) return;
+
+    const branches = [
+      {
+        id: "personas", label: "Personas",
+        iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`,
+        cols: 1,
+        children: [
+          { label: "Vehículos",                serviceId: "personas-vehiculos",   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 12l2-5h10l2 5"/><rect x="2" y="12" width="20" height="5" rx="2"/><circle cx="7" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>` },
+          { label: "Hogar",                    serviceId: "personas-hogar",       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>` },
+          { label: "Vida y Asistencia Médica", serviceId: "personas-vida-medica", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 21s-8-5-8-11a6 6 0 0112 0 6 6 0 0112 0c0 6-8 11-8 11z"/></svg>` },
+          { label: "Seguro de viaje",          serviceId: "personas-viaje",       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M21 3L3 10.5l7 3L21 3z"/><path d="M10 13.5L13 21l3-7"/></svg>` },
+          { label: "Vida y Ahorro",            serviceId: "personas-vida-ahorro", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>` },
+        ]
+      },
+      {
+        id: "empresas", label: "Empresas",
+        iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 014 0v2M3 11h18"/></svg>`,
+        cols: 2,
+        children: [
+          { label: "Multirriesgo",           serviceId: "empresas-multirriesgo", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>` },
+          { label: "Programas de Seguros",   serviceId: "empresas-programas",    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 12h6M9 16h4"/></svg>` },
+          { label: "Transporte",             serviceId: "empresas-transporte",   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 17h18M3 12l2-5h14l2 5"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>` },
+          { label: "Responsabilidad Civil",  serviceId: "empresas-rc",           icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>` },
+          { label: "Accidentes Personales",  serviceId: "empresas-accidentes",   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 8v4M12 16h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>` },
+          { label: "Casco Aéreo / Marítimo", serviceId: "empresas-casco",        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 17l4-8 5 4 5-6 4 10H3z"/></svg>` },
+          { label: "Asistencia Médica",      serviceId: "empresas-medica",       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M12 8v8M8 12h8"/></svg>` },
+        ]
+      },
+      {
+        id: "fianzas", label: "Fianzas",
+        iconSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M9 12h6M9 16h4M5 3h14a2 2 0 012 2v16l-3-2-2 2-2-2-2 2-2-2-3 2V5a2 2 0 012-2z"/></svg>`,
+        cols: 2,
+        children: [
+          { label: "BUA",   serviceId: "fianzas-bua",   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "CC",    serviceId: "fianzas-cc",    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "EOBCM", serviceId: "fianzas-eobcm", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "SO",    serviceId: "fianzas-so",    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "PGB",   serviceId: "fianzas-pgb",   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "FL",    serviceId: "fianzas-fl",    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "GA",    serviceId: "fianzas-ga",    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "GJ",    serviceId: "fianzas-gj",    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+          { label: "GAR",   serviceId: "fianzas-gar",   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>` },
+        ]
+      }
+    ];
+
+    const arrowSvg = `<svg class="cmenu__item-arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+    let activeBranch = null;
+
+    branches.forEach(branch => {
+      const btn = document.getElementById("cmb-" + branch.id);
+      if (!btn) return;
+
+      btn.addEventListener("click", () => {
+        const isOpen = activeBranch === branch.id;
+
+        /* Reset all buttons */
+        branches.forEach(b => {
+          const el = document.getElementById("cmb-" + b.id);
+          if (el) el.setAttribute("aria-expanded", "false");
+        });
+
+        if (isOpen) {
+          /* ── Cerrar ── */
+          activeBranch = null;
+          panel.classList.remove("is-open");
+          panel.setAttribute("aria-hidden", "true");
+          if (hint) hint.textContent = "Toca una categoría para explorar";
+        } else {
+          /* ── Abrir ── */
+          activeBranch = branch.id;
+          btn.setAttribute("aria-expanded", "true");
+
+          /* Construir contenido del panel (BUG corregido: panel.innerHTML directo) */
+          panel.innerHTML = `
+            <div class="cmenu__panel-inner">
+              <div class="cmenu__panel-header">
+                ${branch.iconSvg}
+                <span>${branch.label}</span>
+              </div>
+              <div class="cmenu__panel-items" style="grid-template-columns: repeat(${branch.cols}, 1fr);">
+                ${branch.children.map(child => `
+                  <a class="cmenu__item" href="#" data-svc="${child.serviceId || ''}" aria-haspopup="dialog">
+                    ${child.icon}
+                    <span class="cmenu__item-label">${child.label}</span>
+                    ${arrowSvg}
+                  </a>`).join("")}
+              </div>
+            </div>`;
+
+          panel.classList.add("is-open");
+          panel.setAttribute("aria-hidden", "false");
+          if (hint) hint.textContent = branch.label + " — elige una opción";
+
+          /* Scroll panel into view on small screens */
+          setTimeout(() => panel.scrollIntoView({ behavior: "smooth", block: "nearest" }), 80);
+        }
+      });
+    });
   },
 
   /* ─── SPIDER RADIAL MENU ─── */
@@ -297,16 +394,15 @@ export const Controllers = {
     if (!scene || !centerBtn || !nodesWrap || !svg) return;
 
     const SCENE_W  = 600;
-    const CX       = SCENE_W / 2;   // 300
-    const CY       = SCENE_W / 2;   // 300
-    const R1       = 160;            // orbit 1 radius (3 main nodes)
-    const R2       = 300;            // orbit 2 radius (child nodes — up to 10, expanded for spacing)
+    const CX       = SCENE_W / 2;
+    const CY       = SCENE_W / 2;
+    const R1       = 160;
+    const R2       = 300;
     const DEG      = Math.PI / 180;
 
     let menuOpen  = false;
     let activeId  = null;
 
-    /* helpers */
     function radPos(angleDeg, r) {
       return {
         x: CX + r * Math.cos(angleDeg * DEG),
@@ -333,11 +429,9 @@ export const Controllers = {
       svg.querySelector(`#${id}`)?.remove();
     }
 
-    /* Build DOM nodes */
     services.forEach((svc) => {
       const p = radPos(svc.angle, R1);
 
-      /* Main node */
       const node = document.createElement("button");
       node.className = "spider-node";
       node.id        = "sn-" + svc.id;
@@ -347,35 +441,38 @@ export const Controllers = {
       node.innerHTML  = `<span class="sn-icon">${svc.icon}</span><span class="sn-label">${svc.label.replace("\n", "<br>")}</span>`;
       nodesWrap.appendChild(node);
 
-      /* Child nodes — spread dynamically based on count and per-branch step */
-      const CHILD_STEP = svc.childStep || 9;                  // degrees between children (per branch)
+      const CHILD_STEP = svc.childStep || 9;
       const totalArc   = (svc.children.length - 1) * CHILD_STEP;
       const startAngle = svc.angle - totalArc / 2;
       svc.children.forEach((child, j) => {
-        const spread = startAngle + j * CHILD_STEP;
-        const cp     = radPos(spread, R2);
+        const spread  = startAngle + j * CHILD_STEP;
+        const cp      = radPos(spread, R2);
         const childEl = document.createElement("a");
         childEl.className = "spider-child";
         childEl.id        = `sc-${svc.id}-${j}`;
-        childEl.href      = child.href || "#contacto";
+        childEl.href      = "#";
         childEl.setAttribute("aria-label", child.label.replace("\n", " "));
+        childEl.setAttribute("data-svc", child.serviceId || "");
+        childEl.setAttribute("aria-haspopup", "dialog");
         childEl.style.left = (cp.x - 25) + "px";
         childEl.style.top  = (cp.y - 25) + "px";
         childEl.innerHTML  = `<span class="sc-icon">${child.icon}</span><span class="sc-label">${child.label.replace("\n", "<br>")}</span>`;
+        childEl.addEventListener("click", (e) => {
+          e.preventDefault(); e.stopPropagation();
+          if (child.serviceId && window._sbOpenService) window._sbOpenService(child.serviceId);
+        });
         nodesWrap.appendChild(childEl);
       });
 
-      /* Main node click / hover */
       node.addEventListener("click",      (e) => { e.stopPropagation(); toggleChildren(svc, p); });
       node.addEventListener("mouseenter", ()  => { if (menuOpen) openChildren(svc, p); });
     });
 
-    /* ── toggle main menu ── */
     function openMenu() {
       menuOpen = true;
       centerBtn.classList.add("is-open");
       centerBtn.setAttribute("aria-expanded", "true");
-      hint.textContent = "Selecciona una categoría";
+      if (hint) hint.textContent = "Selecciona una categoría";
       services.forEach((svc, i) => {
         const p  = radPos(svc.angle, R1);
         const el = document.getElementById("sn-" + svc.id);
@@ -391,7 +488,7 @@ export const Controllers = {
       activeId = null;
       centerBtn.classList.remove("is-open");
       centerBtn.setAttribute("aria-expanded", "false");
-      hint.textContent = "Pasa el cursor o haz clic para explorar nuestros servicios";
+      if (hint) hint.textContent = "Pasa el cursor o haz clic para explorar nuestros servicios";
       services.forEach((svc) => {
         document.getElementById("sn-" + svc.id)?.classList.remove("is-visible", "is-active");
         removeLine("ln-" + svc.id);
@@ -399,11 +496,10 @@ export const Controllers = {
       });
     }
 
-    /* ── children ── */
     function openChildren(svc, parentPos) {
       activeId = svc.id;
       document.getElementById("sn-" + svc.id)?.classList.add("is-active");
-      hint.textContent = svc.label.replace("\n", " ") + " — elige una opción";
+      if (hint) hint.textContent = svc.label.replace("\n", " ") + " — elige una opción";
       const childStep2   = svc.childStep || 9;
       const totalArc2    = (svc.children.length - 1) * childStep2;
       const startAngle2  = svc.angle - totalArc2 / 2;
@@ -428,33 +524,29 @@ export const Controllers = {
 
     function toggleChildren(svc, parentPos) {
       const wasActive = activeId === svc.id;
-      /* close all children first */
       services.forEach((s) => closeChildrenOf(s));
       if (!wasActive) {
         openChildren(svc, parentPos);
       } else {
         activeId = null;
-        hint.textContent = "Selecciona una categoría";
+        if (hint) hint.textContent = "Selecciona una categoría";
       }
     }
 
-    /* ── center button ── */
     centerBtn.addEventListener("click", () => {
       if (menuOpen) closeMenu(); else openMenu();
     });
 
-    /* hover on center: auto-open */
     centerBtn.addEventListener("mouseenter", () => {
       if (!menuOpen) openMenu();
     });
 
-    /* click outside: close children but keep menu open; double-click outside closes all */
     scene.addEventListener("click", (e) => {
       if (!e.target.closest(".spider-node") && !e.target.closest(".spider-center") && !e.target.closest(".spider-child")) {
         if (activeId) {
           services.forEach((s) => closeChildrenOf(s));
           activeId = null;
-          hint.textContent = "Selecciona una categoría";
+          if (hint) hint.textContent = "Selecciona una categoría";
         }
       }
     });
@@ -463,5 +555,92 @@ export const Controllers = {
       if (!e.target.closest(".spider-scene") && menuOpen) closeMenu();
     });
   },
+
+  /* ─── MODAL DE SERVICIO ─── */
+  initServiceModal() {
+    const backdrop  = document.getElementById("modal-service");
+    if (!backdrop) return;
+
+    const info    = window.AppModel ? window.AppModel.serviceInfo : {};
+    const waNum   = window.AppModel ? window.AppModel.waNumber : "593998661249";
+
+    const titleEl   = document.getElementById("svc-modal-title");
+    const subEl     = document.getElementById("svc-modal-sub");
+    const descEl    = document.getElementById("svcDesc");
+    const featEl    = document.getElementById("svcFeatures");
+    const waBtn     = document.getElementById("svcWaBtn");
+    const closeTop  = document.getElementById("svc-modal-close");
+    const closeBot  = document.getElementById("svc-modal-close-bottom");
+    const contactBtn= document.getElementById("svcContactBtn");
+
+    const openModal = (serviceId) => {
+      const svc = info[serviceId];
+      if (!svc) return;
+
+      titleEl.textContent = svc.title;
+      subEl.textContent   = "SmartBroker · Seguros";
+
+      descEl.innerHTML = `<p class="modal-section-title">Descripción</p><p>${svc.desc}</p>`;
+
+      if (svc.features && svc.features.length) {
+        featEl.innerHTML = `
+          <p class="modal-section-title">Coberturas principales</p>
+          <ul>${svc.features.map(f => `<li>${f}</li>`).join("")}</ul>`;
+      } else {
+        featEl.innerHTML = "";
+      }
+
+      const waMsg = encodeURIComponent("Hola SmartBroker, me interesa información sobre: " + svc.title);
+      waBtn.href = "https://wa.me/" + waNum + "?text=" + waMsg;
+
+      contactBtn.onclick = (e) => { e.preventDefault(); closeModal(); location.href = "#contacto"; };
+
+      backdrop.removeAttribute("hidden");
+      requestAnimationFrame(() => backdrop.classList.add("is-open"));
+      document.body.style.overflow = "hidden";
+      closeTop.focus();
+    };
+
+    const closeModal = () => {
+      backdrop.classList.remove("is-open");
+      setTimeout(() => backdrop.setAttribute("hidden", ""), 320);
+      document.body.style.overflow = "";
+    };
+
+    closeTop.addEventListener("click", closeModal);
+    closeBot.addEventListener("click", closeModal);
+    backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && backdrop.classList.contains("is-open")) closeModal();
+    });
+
+    /* Exponer globalmente */
+    window._sbOpenService = openModal;
+
+    /* Service cards (sección #servicios) */
+    document.querySelectorAll(".service-card__cta[data-svc]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal(btn.getAttribute("data-svc"));
+      });
+    });
+
+    /* Spider child nodes */
+    document.querySelectorAll(".spider-child[data-svc]").forEach(el => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openModal(el.getAttribute("data-svc"));
+      });
+    });
+
+    /* cmenu items (delegado — el panel se reconstruye en cada apertura) */
+    document.addEventListener("click", (e) => {
+      const item = e.target.closest(".cmenu__item[data-svc]");
+      if (item) { e.preventDefault(); openModal(item.getAttribute("data-svc")); }
+    });
+  },
+
 };
+
 export default Controllers;

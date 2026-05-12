@@ -9,16 +9,11 @@ import Views         from "./views.js";
 import Controllers   from "./controllers.js";
 
 const App = {
-  /**
-   * Bootstrap: renderiza la UI y arranca los controllers.
-   */
   init() {
     const { brand, nav, hero, services, about, contact, sitemap, spiderMenu } = AppModel;
 
-    // ── Inyección de CSS variables de marca ──
     this._applyBrandColors(brand.colors);
 
-    // ── Renderizado de secciones ──
     const root = document.getElementById("app");
     if (!root) { console.error("Missing #app mount point"); return; }
 
@@ -34,25 +29,18 @@ const App = {
       '</main>',
       Views.renderFooter(brand, sitemap, contact),
       Views.renderDataModal(),
+      Views.renderServiceModal(),
     ].join("");
 
-    // ── Arrancar controladores ──
     Controllers.init();
-
-    // ── Spider Menu ──
     Controllers.initSpiderMenu(spiderMenu);
 
-    // ── Accesibilidad: skip-link focus ──
     document.getElementById("skip-link")?.addEventListener("click", (e) => {
       e.preventDefault();
       document.getElementById("main-content")?.focus();
     });
   },
 
-  /**
-   * Aplica los colores de marca como custom properties en :root.
-   * Para cambiar la paleta, edita brand.colors en models.js.
-   */
   _applyBrandColors(colors) {
     const root = document.documentElement;
     root.style.setProperty("--primary",       colors.primary);
@@ -65,10 +53,8 @@ const App = {
   },
 };
 
-/* ── DOMContentLoaded ── */
 document.addEventListener("DOMContentLoaded", () => {
   try {
-    console.log("App: inicializando...");
     App.init();
   } catch (error) {
     console.error("App init falló:", error);
