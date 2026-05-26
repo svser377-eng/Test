@@ -45,7 +45,7 @@ const AppModel = {
     cta:    { label: "Solicitar asesoría gratuita", href: "#contacto" },
     ctaAlt: { label: "Ver nuestros servicios",      href: "#servicios" },
     stats: [
-      { value: "9+",    label: "Años de experiencia" },
+      
       { value: "5.000+", label: "Clientes protegidos" },
       { value: "98%",    label: "Satisfacción" },
     ],
