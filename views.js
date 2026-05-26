@@ -663,7 +663,7 @@ export const Views = {
 
         <!-- Footer -->
         <div class="modal__footer">
-          <p class="modal__footer-note">SmartBroker · Corredora de seguros certificada · RUC 1792783933001</p>
+          <p class="modal__footer-note">SmartBroker · Cia Limitada </p>
           <div class="modal__footer-actions">
             <button class="btn btn--ghost modal-close-btn" id="svc-modal-close-bottom" aria-label="Cerrar">Cerrar</button>
           </div>
