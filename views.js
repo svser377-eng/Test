@@ -142,7 +142,7 @@ export const Views = {
       <div class="container">
         <div class="section-header reveal">
           <span class="eyebrow">Nuestros servicios</span>
-          <h2 id="services-heading">Soluciones para cada<br>etapa de tu vida</h2>
+          <h2 id="services-heading">Somos tu mejor <br>aliado de seguros</h2>
           <p class="section-desc">Cada póliza es diseñada a medida, con asesoría personalizada y acceso a las mejores aseguradoras del mercado.</p>
         </div>
 
