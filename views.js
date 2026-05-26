@@ -177,10 +177,7 @@ export const Views = {
             <div class="about__img-placeholder">
               <img src="assets/Imagen_Equipo.jpeg" alt="Equipo SmartBroker" class="about__team-img" />
             </div>
-            <div class="about__accent-card">
-              <strong>9+</strong>
-              <span>Años protegiendo<br>lo que importa</span>
-            </div>
+            
           </div>
         </div>
 
