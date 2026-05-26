@@ -29,10 +29,11 @@ const AppModel = {
 
   /* ───────── NAV ───────── */
   nav: [
-    { label: "Inicio",    href: "#inicio" },
-    { label: "Servicios", href: "#servicios" },
-    { label: "Nosotros",  href: "#nosotros" },
-    { label: "Contacto",  href: "#contacto" },
+    { label: "Inicio",           href: "#inicio" },
+    { label: "Servicios",        href: "#servicios" },
+    { label: "Nosotros",         href: "#nosotros" },
+    { label: "Contacto",         href: "#contacto" },
+    { label: "Acceso clientes",  href: "https://app.softseguros.com/login_asegurados/", target: "_blank" },
   ],
 
   /* ───────── HERO ───────── */

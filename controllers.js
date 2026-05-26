@@ -305,7 +305,7 @@ const Controllers = {
         children: [
           { label: "Vehículos",                serviceId: "personas-vehiculos",   icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 28l4-12h28l4 12"/></svg>` },
           { label: "Hogar",                    serviceId: "personas-hogar",       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l9-7 9 7v11H3z"/></svg>` },
-          { label: "Vida y Asistencia Médica", serviceId: "personas-vida-medica", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2c5.5 0 10 4.5 10 10s-4.5 10-10 10S2 17.5 2 12 6.5 2 12 2z"/></svg>` },
+          { label: "Asistencia Médica", serviceId: "personas-vida-medica", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg>` },
           { label: "Seguro de viaje",          serviceId: "personas-viaje",       icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2z"/></svg>` },
           { label: "Vida y Ahorro",            serviceId: "personas-vida-ahorro", icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 12h6"/></svg>` },
         ]

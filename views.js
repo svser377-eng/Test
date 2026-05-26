@@ -34,10 +34,10 @@ export const Views = {
         <nav class="header__nav" aria-label="Navegación principal">
           <ul role="list">
             ${nav.map(item => `
-              <li><a href="${item.href}" class="nav-link">${item.label}</a></li>
+              <li><a href="${item.href}" class="nav-link"${item.target ? ` target="${item.target}" rel="noopener noreferrer"` : ""}>${item.label}</a></li>
             `).join("")}
           </ul>
-          <a href="#contacto" class="btn btn--sm btn--primary">Solicitar asesoría</a>
+          <a href="https://api.whatsapp.com/send/?phone=593998661249&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="btn btn--sm btn--primary">Solicitar asesoría</a>
         </nav>
 
         <!-- HAMBURGER -->
@@ -50,10 +50,10 @@ export const Views = {
       <div class="mobile-menu" id="mobile-menu" aria-hidden="true" role="dialog" aria-label="Menú móvil">
         <ul role="list">
           ${nav.map(item => `
-            <li><a href="${item.href}" class="mobile-link">${item.label}</a></li>
+            <li><a href="${item.href}" class="mobile-link"${item.target ? ` target="${item.target}" rel="noopener noreferrer"` : ""}>${item.label}</a></li>
           `).join("")}
         </ul>
-        <a href="#contacto" class="btn btn--primary mobile-cta">Solicitar asesoría</a>
+        <a href="https://api.whatsapp.com/send/?phone=593998661249&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" class="btn btn--primary mobile-cta">Solicitar asesoría</a>
       </div>
     </header>`;
   },
@@ -175,10 +175,7 @@ export const Views = {
         <div class="about__visual reveal" aria-hidden="true">
           <div class="about__img-wrap">
             <div class="about__img-placeholder">
-              <div class="ap-inner">
-                <svg viewBox="0 0 80 80" fill="none"><rect width="80" height="80" rx="16" fill="var(--accent)" opacity=".12"/><path d="M40 20c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zM20 60c0-11 9-20 20-20s20 9 20 20" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/></svg>
-                <p>Foto del equipo</p>
-              </div>
+              <img src="assets/Imagen_Equipo.jpeg" alt="Equipo SmartBroker" class="about__team-img" />
             </div>
             <div class="about__accent-card">
               <strong>9+</strong>
@@ -315,10 +312,10 @@ export const Views = {
               <label for="cf-service">Servicio de interés</label>
               <select id="cf-service" name="service">
                 <option value="">Seleccionar…</option>
-                <option value="vida">Seguro de Vida</option>
-                <option value="salud">Seguro de Salud</option>
-                <option value="vehicular">Seguro Vehicular</option>
-                <option value="empresarial">Seguro Empresarial</option>
+                <option value="Vehicular">Seguro de Vehiculos</option>
+                <option value="Asistencia Médica">Seguro de Salud</option>
+                <option value="Empresas de Seguridad">Empresas de Seguridad</option>
+                <option value="Individual/Empresarial">Seguro Empresarial</option>
               </select>
             </div>
             <div class="form-group form-group--full">
