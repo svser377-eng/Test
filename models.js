@@ -183,7 +183,7 @@ const AppModel = {
       </svg>`,
       title: "Vehicular",
       desc:  "Tu vehículo protegido ante accidentes, robos y daños a terceros. Asistencia en carretera 24/7 con talleres autorizados en todo el país.",
-      features: ["", "", "", " "],
+      features: [""],
     },
     {
       id: "salud",
