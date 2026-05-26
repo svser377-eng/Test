@@ -183,7 +183,7 @@ const AppModel = {
       </svg>`,
       title: "Vehicular",
       desc:  "Tu vehículo protegido ante accidentes, robos y daños a terceros. Asistencia en carretera 24/7 con talleres autorizados en todo el país.",
-      features: ["Pérdida total y parcial", "Responsabilidad civil ampliada", "Asistencia en ruta 24/7", "Vehículo de reemplazo"],
+      /*features: ["Pérdida total y parcial", "Responsabilidad civil ampliada", "Asistencia en ruta 24/7", "Vehículo de reemplazo"],*/
     },
     {
       id: "salud",
@@ -193,7 +193,7 @@ const AppModel = {
       </svg>`,
       title: "Asistencia Médica",
       desc:  "Acceso a la mejor atención médica sin preocuparte por los costos. Cobertura nacional e internacional con red médica premium.",
-      features: ["Hospitalización y cirugías", "Consultas ambulatorias", "Medicamentos recetados", "Emergencias en el exterior"],
+      /*features: ["Hospitalización y cirugías", "Consultas ambulatorias", "Medicamentos recetados", "Emergencias en el exterior"],*/
     },
     {
       id: "seguridad",
@@ -204,7 +204,7 @@ const AppModel = {
       </svg>`,
       title: "Empresas de Seguridad",
       desc:  "Soluciones especializadas para empresas del sector de seguridad privada: protección de operaciones, personal y responsabilidad frente a terceros.",
-      features: ["Responsabilidad civil de operaciones", "Accidentes personales del personal", "Infidelidad y deshonestidad", "Equipos y vehículos operativos"],
+      /*features: ["Responsabilidad civil de operaciones", "Accidentes personales del personal", "Infidelidad y deshonestidad", "Equipos y vehículos operativos"],*/
     },
     {
       id: "individuales",
@@ -216,7 +216,7 @@ const AppModel = {
       </svg>`,
       title: "Individual / Empresarial",
       desc:  "Planes flexibles tanto para personas como para empresas de todos los tamaños. Un solo asesor para todas tus necesidades de protección.",
-      features: ["Vida e invalidez individual", "Multirriesgo empresarial", "RC patronal y de explotación", "Programas colectivos para empleados"],
+     /* features: ["Vida e invalidez individual", "Multirriesgo empresarial", "RC patronal y de explotación", "Programas colectivos para empleados"],*/
     },
   ],
 
