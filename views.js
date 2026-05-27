@@ -153,7 +153,7 @@ export const Views = {
               <h3 id="svc-${s.id}">${s.title}</h3>
               <p>${s.desc}</p>
               <ul class="service-card__features" role="list">
-                ${s.features.map(f => `<li>${f}</li>`).join("")}
+                ${(s.features || []).map(f => `<li>${f}</li>`).join("")}
               </ul>
               <a href="#" class="service-card__cta" data-svc="${s.id}" aria-label="Ver detalles de ${s.title}" aria-haspopup="dialog">
                 Ver detalles

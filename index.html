@@ -32,6 +32,16 @@
   <!-- ── App mount point (JS renderiza aquí) ── -->
   <div id="app" role="document"></div>
 
+  <!-- ── EmailJS SDK ── -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    // Inicializar EmailJS con tu Public Key
+    // INSTRUCCIÓN: Reemplaza "TU_PUBLIC_KEY" con tu Public Key de emailjs.com
+    (function(){
+      emailjs.init({ publicKey: "TU_PUBLIC_KEY" });
+    })();
+  </script>
+
   <!-- ── Module entry point ── -->
   <script type="module" src="app.js"></script>
 

@@ -112,8 +112,8 @@ const AppModel = {
   serviceInfo: {
     "seguridad": {
       title: "Empresas de Seguridad",
-      desc: "Soluciones especializadas para empresas del sector de seguridad privada. Cubrimos las operaciones, el personal en campo y la responsabilidad civil frente a clientes y terceros, adaptándonos a las exigencias regulatorias del sector.",
-      features: ["Responsabilidad civil de operaciones", "Accidentes personales del personal", "Infidelidad y deshonestidad de empleados", "Vehículos y equipos operativos", "RC patronal"],
+      desc: "En Smartbroker ofrecemos soluciones especializadas en seguros para empresas de seguridad privada, diseñadas para cumplir con los requisitos exigidos por la normativa vigente para la obtención y renovación de permisos de operación. Protegemos a tu empresa, personal y operaciones con coberturas que brindan respaldo y tranquilidad en cada servicio.",
+      features: ["Responsabilidad civil", "Accidentes personales para guarias y personal operativo", "Cobertura de Vida", "Protección de equipos y Bienes", "Asistencia Médica", "Coberturas patrimoniales para la operación de la empresa", "Dinero y Valores"],
     },
     /* Servicios de la sección principal */
     "vida": {
@@ -123,13 +123,13 @@ const AppModel = {
     },
     "salud": {
       title: "Seguro de Salud",
-      desc: "Acceso a la mejor atención médica sin preocuparte por los costos. Contamos con una amplia red de clínicas y médicos especialistas a nivel nacional e internacional. Cobertura desde consultas ambulatorias hasta cirugías de alta complejidad.",
+      desc: "rotege tu salud y la de tu familia con soluciones integrales en asistencia médica nacional, internacional y adicional cobertura de gastos médicos mayores. Accede a atención médica, emergencias, hospitalización y respaldo financiero ante enfermedades o tratamientos de alto costo, con el acompañamiento y la tranquilidad que necesitas dentro y fuera del país.",
       features: ["Hospitalización y cirugías mayores", "Consultas ambulatorias ilimitadas", "Medicamentos recetados", "Maternidad y recién nacidos", "Emergencias en el exterior"],
     },
     "vehicular": {
       title: "Seguro Vehicular",
       desc: "Tu vehículo protegido ante accidentes, robos y daños a terceros. Asistencia en carretera disponible las 24 horas del día, los 7 días de la semana. Contamos con talleres autorizados en todo el país para una reparación rápida y de calidad.",
-      features: ["Pérdida total y pérdida parcial", "Responsabilidad civil obligatoria y ampliada", "Asistencia en carretera 24/7", "Vehículo de reemplazo", "Daños por fenómenos naturales"],
+      features: ["Pérdida total y pérdida parcial", "Responsabilidad civil", "Asistencia 24/7", "Auto sustituto", "Daños por desastres naturales"],
     },
     "empresarial": {
       title: "Seguro Empresarial",
@@ -142,9 +142,9 @@ const AppModel = {
       features: ["Multirriesgo empresarial", "RC patronal", "Equipos y maquinaria", "Robo y hurto", "Responsabilidad civil de explotación"],
     },
     "individuales": {
-      title: "Planes Individuales",
-      desc: "Protección personalizada para ti y tu familia: vida, salud y accidentes con coberturas flexibles a tu medida. Asesoría 100% personalizada para encontrar el plan que mejor se adapta a tus necesidades y presupuesto.",
-      features: ["Accidentes personales", "Vida individual", "Enfermedad grave", "Invalidez permanente", "Gastos médicos por accidente"],
+      title: "Planes Individuales y Empresariales",
+      desc: "En Smartbroker protegemos lo que más valoras con soluciones integrales en seguros para personas y empresas. Salud, vida, vehículos, hogar y coberturas corporativas con el respaldo y la asesoría que necesitas.",
+      features: ["Seguros Individuales", "Asistencia Médica  Nacional e Internacional", "Gastos Mayores", "Vida y ahorro", "Vehiculos", "Hogar", "Accidentes Personales", "Viajes", "Seguros Empresariales", "Salud Corporativa", "Vehiculo y FLotas", "Responsabilidad Civil", "Multirriesgo Empresarial", "Transporte", "Todo Riesgo Construcción", "Fianzas", "Riesgos Laborales", "Vida y ahorro", "Beneficios para Colaboradores", "Accidentes Personales Colectivos", "Casco Aéreo / Maritimo"],
     },
     /* Spider / menú araña */
     "personas-vehiculos":  { title: "Vehículos",             desc: "Creamos un seguro acorde a tus necesidades, pensando en ti y tu familia para que viajen tranquilos, brindando la mejor protección.", features: ["Todo Riesgo","Pérdida parcial","Pérdida total","Choques","Responsabilidad civil(daños a terceros)","Robo","Auto Sustituto","Amparo patrimonial"] },
@@ -192,7 +192,7 @@ const AppModel = {
         <path d="M24 16v16M16 24h16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
       </svg>`,
       title: "Asistencia Médica",
-      desc:  "Acceso a la mejor atención médica sin preocuparte por los costos. Cobertura nacional e internacional con red médica premium.",
+      desc:  "Protege tu salud y la de tu familia con cobertura médica integral y respaldo ante gastos médicos mayores. Accede a atención, emergencias, hospitalización y una amplia red de servicios de salud diseñados para brindarte tranquilidad y bienestar en todo momento.",
       features: [""],
     },
     {

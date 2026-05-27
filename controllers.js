@@ -119,6 +119,53 @@ const Controllers = {
   /* ═══════════════════════════════════════
      FORM CONTROLLER
   ═══════════════════════════════════════ */
+
+  /*
+   * Configuración de EmailJS
+   * ─────────────────────────────────────────────────────────────────
+   * INSTRUCCIONES DE CONFIGURACIÓN:
+   *
+   * 1. Crea cuenta gratuita en https://www.emailjs.com
+   * 2. En "Email Services" → conecta tu cuenta Gmail/SMTP → copia el Service ID
+   * 3. En "Email Templates" → crea una plantilla con estas variables:
+   *      {{from_name}}   {{from_email}}   {{phone}}
+   *      {{service}}     {{message}}      {{to_email}}
+   *    El campo "To Email" de la plantilla ponlo como: yordonez@smartbroker.com.ec
+   *    O usa la variable {{to_email}} en el campo "To" de la plantilla
+   * 4. Copia el Template ID
+   * 5. En "Account" → copia tu Public Key (ya está en index.html)
+   * 6. Reemplaza los valores de abajo con los tuyos:
+   * ─────────────────────────────────────────────────────────────────
+   */
+  _emailConfig: {
+    serviceId:  "TU_SERVICE_ID",    // ej: "service_abc123"
+    templateId: "TU_TEMPLATE_ID",   // ej: "template_xyz789"
+    toEmail:    "yordonez@smartbroker.com.ec",
+  },
+
+  /* ── Rate limiting: 1 envío por email por día (localStorage) ── */
+  _canSendEmail(email) {
+    const key  = "sb_last_send_" + btoa(email.toLowerCase().trim());
+    const last = localStorage.getItem(key);
+    if (!last) return true;
+    const elapsed = Date.now() - parseInt(last, 10);
+    return elapsed > 24 * 60 * 60 * 1000; // 24 horas en ms
+  },
+
+  _registerSend(email) {
+    const key = "sb_last_send_" + btoa(email.toLowerCase().trim());
+    localStorage.setItem(key, String(Date.now()));
+  },
+
+  _timeUntilNextSend(email) {
+    const key     = "sb_last_send_" + btoa(email.toLowerCase().trim());
+    const last    = parseInt(localStorage.getItem(key) || "0", 10);
+    const ms      = 24 * 60 * 60 * 1000 - (Date.now() - last);
+    const h       = Math.floor(ms / 3_600_000);
+    const m       = Math.floor((ms % 3_600_000) / 60_000);
+    return `${h}h ${m}min`;
+  },
+
   initContactForm() {
     const form    = document.getElementById("contact-form");
     const submit  = document.getElementById("form-submit");
@@ -147,22 +194,75 @@ const Controllers = {
       });
 
       if (!valid) {
-        const firstErr = form.querySelector(".is-invalid");
-        firstErr?.focus();
+        form.querySelector(".is-invalid")?.focus();
         return;
       }
 
-      /* Simulate async submission */
+      /* Verificar rate limit antes de enviar */
+      const emailVal = form.querySelector("#cf-email")?.value.trim() || "";
+      if (!this._canSendEmail(emailVal)) {
+        const remaining = this._timeUntilNextSend(emailVal);
+        this._showFormError(
+          form,
+          `Ya enviaste un mensaje hoy desde este correo. Podrás enviar otro en aproximadamente ${remaining}.`
+        );
+        return;
+      }
+
+      /* Enviar con EmailJS */
       this._setFormLoading(true, btnText, btnLoad, submit);
-      await this._simulateSubmit();
-      this._setFormLoading(false, btnText, btnLoad, submit);
 
-      form.reset();
-      success.hidden = false;
-      success.focus();
+      const templateParams = {
+        from_name:  form.querySelector("#cf-name")?.value.trim()    || "",
+        from_email: emailVal,
+        phone:      form.querySelector("#cf-phone")?.value.trim()   || "No indicado",
+        service:    form.querySelector("#cf-service")?.value        || "No indicado",
+        message:    form.querySelector("#cf-message")?.value.trim() || "",
+        to_email:   this._emailConfig.toEmail,
+      };
 
-      setTimeout(() => { success.hidden = true; }, 6000);
+      try {
+        await emailjs.send(
+          this._emailConfig.serviceId,
+          this._emailConfig.templateId,
+          templateParams
+        );
+
+        /* Registrar el envío para el rate limit */
+        this._registerSend(emailVal);
+
+        this._setFormLoading(false, btnText, btnLoad, submit);
+        form.reset();
+        fields.forEach(f => f.classList.remove("is-valid", "is-invalid"));
+
+        success.hidden = false;
+        success.focus();
+        setTimeout(() => { success.hidden = true; }, 7000);
+
+      } catch (err) {
+        this._setFormLoading(false, btnText, btnLoad, submit);
+        console.error("EmailJS error:", err);
+        this._showFormError(
+          form,
+          "Ocurrió un error al enviar el mensaje. Por favor intenta de nuevo o escríbenos directamente a yordonez@smartbroker.com.ec"
+        );
+      }
     });
+  },
+
+  _showFormError(form, message) {
+    let errBox = form.querySelector(".form-send-error");
+    if (!errBox) {
+      errBox = document.createElement("div");
+      errBox.className = "form-send-error";
+      errBox.setAttribute("role", "alert");
+      errBox.setAttribute("aria-live", "polite");
+      form.querySelector("#form-submit").insertAdjacentElement("afterend", errBox);
+    }
+    errBox.textContent = message;
+    errBox.hidden = false;
+    errBox.focus?.();
+    setTimeout(() => { errBox.hidden = true; }, 9000);
   },
 
   _validateField(field) {
@@ -197,9 +297,6 @@ const Controllers = {
     else btnLoad.setAttribute("aria-hidden", "true");
   },
 
-  _simulateSubmit() {
-    return new Promise(resolve => setTimeout(resolve, 1800));
-  },
 
   /* ═══════════════════════════════════════
      COUNTER ANIMATION (stats in hero)
