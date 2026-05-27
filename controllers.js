@@ -138,9 +138,9 @@ const Controllers = {
    * ─────────────────────────────────────────────────────────────────
    */
   _emailConfig: {
-    serviceId:  "TU_SERVICE_ID",    // ej: "service_abc123"
-    templateId: "TU_TEMPLATE_ID",   // ej: "template_xyz789"
-    toEmail:    "yordonez@smartbroker.com.ec",
+    serviceId:  "TU_SERVICE_ID",    // ej: "service_1cqahbr"
+    templateId: "TU_TEMPLATE_ID",   // ej: "template_ay0dj9f"
+    toEmail:    "smartbrokermk@gmail.com",
   },
 
   /* ── Rate limiting: 1 envío por email por día (localStorage) ── */
