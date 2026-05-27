@@ -225,7 +225,7 @@ const AppModel = {
     eyebrow: "Sobre SmartBroker",
     headline: "Más que un seguro,<br>una promesa de respaldo.",
     body: [
-      "Somos una Agencia Productora de Seguros, especializada en brindar soluciones de protección para personas, familias y empresas.
+      "Somos una Agencia Productora de Seguros, especializada en brindar soluciones de protección para personas, familias y empresas.",
       "Ofrecemos una asesoría cercana, transparente y estratégica, acompañando a cada cliente antes, durante y después de la contratación de su póliza.",
       "No trabajamos para una sola aseguradora; trabajamos para proteger tus intereses, analizando las mejores opciones del mercado para encontrar coberturas competitivas y alineadas a tus necesidades.",
       "Construimos relaciones basadas en confianza, respaldo y tranquilidad.",
