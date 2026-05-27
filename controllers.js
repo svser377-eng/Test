@@ -717,7 +717,7 @@ const Controllers = {
           return `<li>${f}</li>`;
         }).join("");
         featEl.innerHTML = `
-          <p class="modal-section-title">Coberturas principales</p>
+          <p class="modal-section-title">Portafolio Integral de Seguros</p>
           <ul>${items}</ul>`.replace(/<ul>\s*<\/ul>/g, "");
       } else {
         featEl.innerHTML = "";
