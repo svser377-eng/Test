@@ -1558,7 +1558,7 @@ input.is-valid,   textarea.is-valid   { border-color: var(--success); }
   color: var(--accent);
   flex-shrink: 0;
 }
-.modal__icon svg, .modal__icon img { width: 20px; height: 20px; object-fit: contain; }
+.modal__icon svg { width: 20px; height: 20px; }
 
 .modal__title {
   font-family: var(--font-display);

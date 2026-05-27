@@ -453,7 +453,7 @@ export const Views = {
         <div class="modal__header">
           <div class="modal__header-left">
             <div class="modal__icon" aria-hidden="true">
-              <img src="assets/sello-smartbroker-nobg.png" alt="SmartBroker" style="width:20px;height:20px;object-fit:contain;" />
+              <img src="assets/sello-smartbroker-white.png" alt="SmartBroker" style="width:36px;height:36px;object-fit:contain;" />
             </div>
             <div>
               <div class="modal__title" id="modal-title">Política de Protección de Datos Personales</div>
@@ -631,7 +631,7 @@ export const Views = {
         <div class="modal__header svc-modal__header">
           <div class="modal__header-left">
             <div class="modal__icon svc-modal__icon" id="svcIcon" aria-hidden="true">
-              <img src="assets/sello-smartbroker-nobg.png" alt="SmartBroker" style="width:20px;height:20px;object-fit:contain;" />
+              <img src="assets/sello-smartbroker-white.png" alt="SmartBroker" style="width:36px;height:36px;object-fit:contain;" />
             </div>
             <div>
               <div class="modal__title" id="svc-modal-title">Servicio</div>
