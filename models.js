@@ -225,8 +225,10 @@ const AppModel = {
     eyebrow: "Sobre SmartBroker",
     headline: "Más que un seguro,<br>una promesa de respaldo.",
     body: [
-      "Somos una corredora de seguros independiente con más de 9 años en el mercado, comprometida con ofrecer asesoría honesta, soluciones personalizadas y acompañamiento real en los momentos que más importan.",
-      "No trabajamos para las aseguradoras; trabajamos para ti. Nuestro modelo independiente nos permite acceder a las mejores pólizas del mercado y negociar en nombre de nuestros clientes.",
+      "Somos una Agencia Productora de Seguros, especializada en brindar soluciones de protección para personas, familias y empresas.
+      "Ofrecemos una asesoría cercana, transparente y estratégica, acompañando a cada cliente antes, durante y después de la contratación de su póliza.",
+      "No trabajamos para una sola aseguradora; trabajamos para proteger tus intereses, analizando las mejores opciones del mercado para encontrar coberturas competitivas y alineadas a tus necesidades.",
+      "Construimos relaciones basadas en confianza, respaldo y tranquilidad.",
     ],
     values: [
       {
