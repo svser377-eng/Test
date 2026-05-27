@@ -710,7 +710,7 @@ const Controllers = {
 
       if (svc.features && svc.features.length) {
         featEl.innerHTML = `
-          <p class="modal-section-title">Coberturas principales</p>
+          <p class="modal-section-title">Portafolio Integral de Seguros</p>
           <ul>${svc.features.map(f => `<li>${f}</li>`).join("")}</ul>`;
       } else {
         featEl.innerHTML = "";
