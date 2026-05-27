@@ -313,6 +313,7 @@ export const Views = {
                 <option value="Asistencia Médica">Seguro de Salud</option>
                 <option value="Empresas de Seguridad">Empresas de Seguridad</option>
                 <option value="Individual/Empresarial">Seguro Empresarial</option>
+                <option value="Otros">Otros</option>
               </select>
             </div>
             <div class="form-group form-group--full">
@@ -372,7 +373,7 @@ export const Views = {
             <span class="logo-text">${brand.logo.text}</span>
             `}
           </a>
-          <p>${brand.description} · ${brand.tagline}</p>
+
           <div class="footer__social" aria-label="Redes sociales">
             ${contact.social.map(s => `
               <a href="${s.href}" class="social-btn social-btn--sm ${s.cls || ''}" aria-label="${s.name}" rel="noopener noreferrer">${s.icon}</a>
