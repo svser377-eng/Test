@@ -9,8 +9,8 @@ const AppModel = {
   /* ───────── BRAND ───────── */
   brand: {
     name: "SmartBroker",
-    tagline: "Tu mejor aliado",
-    description: "Corredora de seguros",
+    /*tagline: "Tu mejor aliado",
+    description: "Corredora de seguros",*/
     logo: {
       text: "Smart<span class='logo-accent'>Broker</span>",
       image: "assets/logo-transparent.png",      // Logo sin fondo
@@ -123,7 +123,7 @@ const AppModel = {
     },
     "salud": {
       title: "Seguro de Salud",
-      desc: "rotege tu salud y la de tu familia con soluciones integrales en asistencia médica nacional, internacional y adicional cobertura de gastos médicos mayores. Accede a atención médica, emergencias, hospitalización y respaldo financiero ante enfermedades o tratamientos de alto costo, con el acompañamiento y la tranquilidad que necesitas dentro y fuera del país.",
+      desc: "Protege tu salud y la de tu familia con soluciones integrales en asistencia médica nacional, internacional y adicional cobertura de gastos médicos mayores. Accede a atención médica, emergencias, hospitalización y respaldo financiero ante enfermedades o tratamientos de alto costo, con el acompañamiento y la tranquilidad que necesitas dentro y fuera del país.",
       features: ["Hospitalización y cirugías mayores", "Consultas ambulatorias ilimitadas", "Medicamentos recetados", "Maternidad y recién nacidos", "Emergencias en el exterior"],
     },
     "vehicular": {
@@ -193,7 +193,7 @@ const AppModel = {
       </svg>`,
       title: "Asistencia Médica",
       desc:  "Protege tu salud y la de tu familia con cobertura médica integral y respaldo ante gastos médicos mayores. Accede a atención, emergencias, hospitalización y una amplia red de servicios de salud diseñados para brindarte tranquilidad y bienestar en todo momento.",
-      features: [""],
+      /*features: [""],*/
     },
     {
       id: "seguridad",
@@ -204,7 +204,7 @@ const AppModel = {
       </svg>`,
       title: "Empresas de Seguridad",
       desc:  "Soluciones especializadas para empresas del sector de seguridad privada: protección de operaciones, personal y responsabilidad frente a terceros.",
-      features: [""],
+      /*features: [""],*/
     },
     {
       id: "individuales",
@@ -216,7 +216,7 @@ const AppModel = {
       </svg>`,
       title: "Individual / Empresarial",
       desc:  "Planes flexibles tanto para personas como para empresas de todos los tamaños. Un solo asesor para todas tus necesidades de protección.",
-      features: [""],
+      
     },
   ],
 
@@ -290,9 +290,9 @@ const AppModel = {
     subtext:  "Completa el formulario y un asesor te contactará en menos de 24 horas. Sin compromisos, sin presión.",
     info: [
       { icon: "📍", label: "Dirección", value: "Gaspar de Escalona N 38-39 y Av. Juan José de Villalengua Piso 2" },
-      { icon: "📞", label: "Teléfono",  value: "099 866 1249" },
-      { icon: "✉️", label: "Email",     value: "yordonez@smartbroker.com.ec" },
-      { icon: "🕐", label: "Horario",   value: "Lun–Vie: 8am–6pm" },
+      { icon: "📞", label: "Teléfono",  value: "099 866 1249 / 097 943 8015" },
+      { icon: "✉️", label: "Email",     value: "yordonez@smartbroker.com.ec / operaciones@smartbroker.com.ec" },
+      { icon: "🕐", label: "Horario",   value: "Lun–Vie: 8:30 am– 5:30 pm" },
     ],
     social: [
       { name: "LinkedIn",  href: "https://www.linkedin.com/company/smartbroker-ec/", icon: "in", cls: "social-btn--linkedin", target: "_blank", rel: "noopener noreferrer" },

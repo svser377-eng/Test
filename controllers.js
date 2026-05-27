@@ -120,50 +120,44 @@ const Controllers = {
      FORM CONTROLLER
   ═══════════════════════════════════════ */
 
-  /*
-   * Configuración de EmailJS
-   * ─────────────────────────────────────────────────────────────────
-   * INSTRUCCIONES DE CONFIGURACIÓN:
-   *
-   * 1. Crea cuenta gratuita en https://www.emailjs.com
-   * 2. En "Email Services" → conecta tu cuenta Gmail/SMTP → copia el Service ID
-   * 3. En "Email Templates" → crea una plantilla con estas variables:
-   *      {{from_name}}   {{from_email}}   {{phone}}
-   *      {{service}}     {{message}}      {{to_email}}
-   *    El campo "To Email" de la plantilla ponlo como: yordonez@smartbroker.com.ec
-   *    O usa la variable {{to_email}} en el campo "To" de la plantilla
-   * 4. Copia el Template ID
-   * 5. En "Account" → copia tu Public Key (ya está en index.html)
-   * 6. Reemplaza los valores de abajo con los tuyos:
-   * ─────────────────────────────────────────────────────────────────
-   */
+  /* ── Configuración EmailJS ── */
   _emailConfig: {
-    serviceId:  "TU_SERVICE_ID",    // ej: "service_1cqahbr"
-    templateId: "TU_TEMPLATE_ID",   // ej: "template_ay0dj9f"
-    toEmail:    "smartbrokermk@gmail.com",
+    serviceId:  "service_1cqahbr",
+    templateId: "template_ay0dj9f",
+    toEmail:    "yordonez@smartbroker.com.ec",
   },
 
-  /* ── Rate limiting: 1 envío por email por día (localStorage) ── */
+  /* ── Rate limiting: 1 envío por email por día ── */
   _canSendEmail(email) {
-    const key  = "sb_last_send_" + btoa(email.toLowerCase().trim());
-    const last = localStorage.getItem(key);
-    if (!last) return true;
-    const elapsed = Date.now() - parseInt(last, 10);
-    return elapsed > 24 * 60 * 60 * 1000; // 24 horas en ms
+    try {
+      const key  = "sb_last_" + btoa(email.toLowerCase().trim());
+      const last = localStorage.getItem(key);
+      if (!last) return true;
+      return (Date.now() - parseInt(last, 10)) > 86_400_000;
+    } catch { return true; }
   },
-
   _registerSend(email) {
-    const key = "sb_last_send_" + btoa(email.toLowerCase().trim());
-    localStorage.setItem(key, String(Date.now()));
+    try {
+      const key = "sb_last_" + btoa(email.toLowerCase().trim());
+      localStorage.setItem(key, String(Date.now()));
+    } catch { /* storage bloqueado */ }
+  },
+  _timeLeft(email) {
+    try {
+      const key  = "sb_last_" + btoa(email.toLowerCase().trim());
+      const ms   = 86_400_000 - (Date.now() - parseInt(localStorage.getItem(key) || "0", 10));
+      return `${Math.floor(ms / 3_600_000)}h ${Math.floor((ms % 3_600_000) / 60_000)}min`;
+    } catch { return "24h"; }
   },
 
-  _timeUntilNextSend(email) {
-    const key     = "sb_last_send_" + btoa(email.toLowerCase().trim());
-    const last    = parseInt(localStorage.getItem(key) || "0", 10);
-    const ms      = 24 * 60 * 60 * 1000 - (Date.now() - last);
-    const h       = Math.floor(ms / 3_600_000);
-    const m       = Math.floor((ms % 3_600_000) / 60_000);
-    return `${h}h ${m}min`;
+  /* ── Leer archivo como base64 ── */
+  _fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload  = () => resolve(reader.result.split(",")[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   },
 
   initContactForm() {
@@ -175,10 +169,26 @@ const Controllers = {
 
     if (!form) return;
 
-    /* ── Real-time validation ── */
+    /* ── Mostrar nombre del archivo seleccionado ── */
+    const fileInput   = document.getElementById("cf-attach");
+    const fileDisplay = document.getElementById("file-name-display");
+    fileInput?.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (!file) { fileDisplay.textContent = "Seleccionar archivo…"; return; }
+      if (file.size > 500 * 1024) {
+        document.getElementById("err-attach").textContent = "El archivo supera los 500 KB.";
+        fileInput.value = "";
+        fileDisplay.textContent = "Seleccionar archivo…";
+        return;
+      }
+      document.getElementById("err-attach").textContent = "";
+      fileDisplay.textContent = file.name;
+    });
+
+    /* ── Validación en tiempo real ── */
     const fields = form.querySelectorAll("input[required], textarea[required]");
     fields.forEach(field => {
-      field.addEventListener("blur", () => this._validateField(field));
+      field.addEventListener("blur",  () => this._validateField(field));
       field.addEventListener("input", () => {
         if (field.classList.contains("is-invalid")) this._validateField(field);
       });
@@ -187,52 +197,66 @@ const Controllers = {
     /* ── Submit ── */
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
+      /* Validar campos requeridos */
       let valid = true;
+      fields.forEach(f => { if (!this._validateField(f)) valid = false; });
+      if (!valid) { form.querySelector(".is-invalid")?.focus(); return; }
 
-      fields.forEach(field => {
-        if (!this._validateField(field)) valid = false;
-      });
-
-      if (!valid) {
-        form.querySelector(".is-invalid")?.focus();
+      /* Validar tamaño del adjunto si existe */
+      const file = fileInput?.files[0];
+      if (file && file.size > 500 * 1024) {
+        document.getElementById("err-attach").textContent = "El archivo supera los 500 KB.";
+        fileInput.focus();
         return;
       }
 
-      /* Verificar rate limit antes de enviar */
-      const emailVal = form.querySelector("#cf-email")?.value.trim() || "";
+      /* Rate limit */
+      const emailVal = document.getElementById("cf-email")?.value.trim() || "";
       if (!this._canSendEmail(emailVal)) {
-        const remaining = this._timeUntilNextSend(emailVal);
-        this._showFormError(
-          form,
-          `Ya enviaste un mensaje hoy desde este correo. Podrás enviar otro en aproximadamente ${remaining}.`
-        );
+        this._showFormError(form, `Ya enviaste un mensaje hoy. Podrás enviar otro en ${this._timeLeft(emailVal)}.`);
         return;
+      }
+
+      /* Preparar parámetros */
+      this._setFormLoading(true, btnText, btnLoad, submit);
+
+      const params = {
+        from_name:  document.getElementById("cf-name")?.value.trim()    || "",
+        from_email: emailVal,
+        phone:      document.getElementById("cf-phone")?.value.trim()   || "No indicado",
+        service:    document.getElementById("cf-service")?.value        || "No indicado",
+        message:    document.getElementById("cf-message")?.value.trim() || "",
+        to_email:   this._emailConfig.toEmail,
+        has_attach: "No",
+        attach_name: "",
+        attach_data: "",
+      };
+
+      /* Adjuntar archivo como base64 si existe */
+      if (file) {
+        try {
+          params.attach_data = await this._fileToBase64(file);
+          params.attach_name = file.name;
+          params.has_attach  = `Sí — ${file.name}`;
+        } catch {
+          params.has_attach = "Error al leer el archivo";
+        }
       }
 
       /* Enviar con EmailJS */
-      this._setFormLoading(true, btnText, btnLoad, submit);
-
-      const templateParams = {
-        from_name:  form.querySelector("#cf-name")?.value.trim()    || "",
-        from_email: emailVal,
-        phone:      form.querySelector("#cf-phone")?.value.trim()   || "No indicado",
-        service:    form.querySelector("#cf-service")?.value        || "No indicado",
-        message:    form.querySelector("#cf-message")?.value.trim() || "",
-        to_email:   this._emailConfig.toEmail,
-      };
-
       try {
         await emailjs.send(
           this._emailConfig.serviceId,
           this._emailConfig.templateId,
-          templateParams
+          params
         );
 
-        /* Registrar el envío para el rate limit */
         this._registerSend(emailVal);
-
         this._setFormLoading(false, btnText, btnLoad, submit);
+
         form.reset();
+        if (fileDisplay) fileDisplay.textContent = "Seleccionar archivo…";
         fields.forEach(f => f.classList.remove("is-valid", "is-invalid"));
 
         success.hidden = false;
@@ -240,29 +264,25 @@ const Controllers = {
         setTimeout(() => { success.hidden = true; }, 7000);
 
       } catch (err) {
-        this._setFormLoading(false, btnText, btnLoad, submit);
         console.error("EmailJS error:", err);
-        this._showFormError(
-          form,
-          "Ocurrió un error al enviar el mensaje. Por favor intenta de nuevo o escríbenos directamente a yordonez@smartbroker.com.ec"
-        );
+        this._setFormLoading(false, btnText, btnLoad, submit);
+        this._showFormError(form, "Error al enviar. Escríbenos a yordonez@smartbroker.com.ec");
       }
     });
   },
 
-  _showFormError(form, message) {
-    let errBox = form.querySelector(".form-send-error");
-    if (!errBox) {
-      errBox = document.createElement("div");
-      errBox.className = "form-send-error";
-      errBox.setAttribute("role", "alert");
-      errBox.setAttribute("aria-live", "polite");
-      form.querySelector("#form-submit").insertAdjacentElement("afterend", errBox);
+  _showFormError(form, msg) {
+    let box = form.querySelector(".form-send-error");
+    if (!box) {
+      box = document.createElement("div");
+      box.className = "form-send-error";
+      box.setAttribute("role", "alert");
+      box.setAttribute("aria-live", "polite");
+      document.getElementById("form-submit").insertAdjacentElement("afterend", box);
     }
-    errBox.textContent = message;
-    errBox.hidden = false;
-    errBox.focus?.();
-    setTimeout(() => { errBox.hidden = true; }, 9000);
+    box.textContent = msg;
+    box.hidden = false;
+    setTimeout(() => { box.hidden = true; }, 9000);
   },
 
   _validateField(field) {

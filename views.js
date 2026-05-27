@@ -320,6 +320,17 @@ export const Views = {
               <textarea id="cf-message" name="message" rows="4" placeholder="Cuéntanos qué necesitas…" required aria-required="true"></textarea>
               <span class="form-error" id="err-message" role="alert" aria-live="polite"></span>
             </div>
+            <div class="form-group form-group--full">
+              <label for="cf-attach">Adjunto <span class="form-label-hint">(opcional · PDF, JPG, PNG · máx. 500 KB)</span></label>
+              <div class="file-input-wrapper">
+                <input type="file" id="cf-attach" name="attach" accept=".pdf,.jpg,.jpeg,.png" aria-describedby="err-attach"/>
+                <label for="cf-attach" class="file-input-label" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M10 3v10M6 9l4-4 4 4"/><path d="M4 15h12" stroke-linecap="round"/></svg>
+                  <span id="file-name-display">Seleccionar archivo…</span>
+                </label>
+                <span class="form-error" id="err-attach" role="alert" aria-live="polite"></span>
+              </div>
+            </div>
             <button type="submit" class="btn btn--primary btn--lg btn--block" id="form-submit">
               <span id="btn-text">Enviar mensaje</span>
               <span id="btn-loading" hidden aria-hidden="true">
@@ -442,7 +453,7 @@ export const Views = {
         <div class="modal__header">
           <div class="modal__header-left">
             <div class="modal__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <img src="assets/sello-smartbroker-nobg.png" alt="SmartBroker" style="width:20px;height:20px;object-fit:contain;" />
             </div>
             <div>
               <div class="modal__title" id="modal-title">Política de Protección de Datos Personales</div>
@@ -620,7 +631,7 @@ export const Views = {
         <div class="modal__header svc-modal__header">
           <div class="modal__header-left">
             <div class="modal__icon svc-modal__icon" id="svcIcon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <img src="assets/sello-smartbroker-nobg.png" alt="SmartBroker" style="width:20px;height:20px;object-fit:contain;" />
             </div>
             <div>
               <div class="modal__title" id="svc-modal-title">Servicio</div>
@@ -663,7 +674,7 @@ export const Views = {
 
         <!-- Footer -->
         <div class="modal__footer">
-          <p class="modal__footer-note">SmartBroker · Cia Limitada </p>
+          <p class="modal__footer-note">Smartbroker Cia Ltda </p>
           <div class="modal__footer-actions">
             <button class="btn btn--ghost modal-close-btn" id="svc-modal-close-bottom" aria-label="Cerrar">Cerrar</button>
           </div>
