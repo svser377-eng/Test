@@ -144,7 +144,7 @@ const AppModel = {
     "individuales": {
       title: "Planes Individuales y Empresariales",
       desc: "En Smartbroker protegemos lo que más valoras con soluciones integrales en seguros para personas y empresas. Salud, vida, vehículos, hogar y coberturas corporativas con el respaldo y la asesoría que necesitas.",
-      features: ["Seguros Individuales", "Asistencia Médica  Nacional e Internacional", "Gastos Mayores", "Vida y ahorro", "Vehiculos", "Hogar", "Accidentes Personales", "Viajes", "Seguros Empresariales", "Salud Corporativa", "Vehiculo y FLotas", "Responsabilidad Civil", "Multirriesgo Empresarial", "Transporte", "Todo Riesgo Construcción", "Fianzas", "Riesgos Laborales", "Vida y ahorro", "Beneficios para Colaboradores", "Accidentes Personales Colectivos", "Casco Aéreo / Maritimo"],
+      features: ["Seguros Individuales", "Asistencia Médica  Nacional e Internacional", "Gastos Mayores", "Vida y ahorro", "Vehículos", "Hogar", "Accidentes Personales", "Viajes", "Seguros Empresariales", "Salud Corporativa", "Vehículo y FLotas", "Responsabilidad Civil", "Multirriesgo Empresarial", "Transporte", "Todo Riesgo Construcción", "Fianzas", "Riesgos Laborales", "Vida y ahorro", "Beneficios para Colaboradores", "Accidentes Personales Colectivos", "Casco Aéreo / Marítimo"],
     },
     /* Spider / menú araña */
     "personas-vehiculos":  { title: "Vehículos",             desc: "Creamos un seguro acorde a tus necesidades, pensando en ti y tu familia para que viajen tranquilos, brindando la mejor protección.", features: ["Todo Riesgo","Pérdida parcial","Pérdida total","Choques","Responsabilidad civil(daños a terceros)","Robo","Auto Sustituto","Amparo patrimonial"] },
