@@ -244,7 +244,7 @@ const AppModel = {
       {
         icon: `<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.8"/><path d="M16 10v7l4 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`,
         title: "Experiencia",
-        desc: "9+ años asesorando con criterio y conocimiento.",
+        desc: "Asesorando con criterio, conocimiento y compromiso en cada solución de protección.",
       },
       {
         icon: `<svg viewBox="0 0 32 32" fill="none"><path d="M4 20l7-7 5 5 7-9 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
